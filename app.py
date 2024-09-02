@@ -14,9 +14,14 @@ def predict():
 
     # Convert the data into a numpy array (assume data is a list of feature values)
     features = np.array([data['features']])
+    number_of_features = len(features[0])
 
-    if len(features[0]) <= 14:
-        error_response = {'error': True, 'status': 400, 'data': None, 'message': "Number of floats must be 15"}
+    if number_of_features != 15:
+        error_response = {
+            'error': True,
+            'status': 400,
+            'data': None,
+            'message': f"Number of features must be 15 but got {number_of_features}"}
         print(error_response)
         return error_response, 400
 
@@ -28,7 +33,7 @@ def predict():
     retJson = {
         'error': 'False', 'status': 200,
         'data': {
-            'prediction': predicted_result,
+            'prediction': round(predicted_result, 2),
             'price': round(predicted_result * 1000, 3),
             'currency': 'USD',
             "multiplier": 1000},
